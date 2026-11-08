@@ -23,12 +23,12 @@ namespace DiGi.Serilog.Classes
         /// <summary>
         /// Gets or sets the directory the <c>logs</c> folder is created in. When null the directory the application was launched from is used, or the requesting assembly's own directory when <see cref="RoutePerAssembly"/> is enabled.
         /// </summary>
-        public string? Directory { get; set; } = null;
+        public string? Directory { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether a logger writes into the directory of the assembly requesting it instead of the directory the application was launched from. Defaults to false, so one application writes one log no matter where its assemblies were deployed.
         /// </summary>
-        public bool RoutePerAssembly { get; set; } = false;
+        public bool RoutePerAssembly { get; set; }
 
         /// <summary>
         /// Retrieves an existing logger for the specified assembly or creates a new one if requested.
@@ -93,6 +93,7 @@ namespace DiGi.Serilog.Classes
                 .WriteTo.File(
                     path: logPath,
                     rollingInterval: RollingInterval.Day,
+                    formatProvider: System.Globalization.CultureInfo.CurrentCulture,
                     // A day of a bulk task exceeds the 1 GB default file size limit in ~8 h; without rolling on size
                     // Serilog silently drops everything after it, including a run's closing summary. The limit is
                     // kept so one file stays openable, and the count is per segment now, not per day.
